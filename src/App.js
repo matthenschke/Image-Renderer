@@ -1,25 +1,44 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+
+// components
+import Images from "./components/Images";
+import Form from "./components/Form";
+import Header from "./components/Header";
+import HelpText from "./components/HelpText";
+
 import './App.css';
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      images : [],
+      currentImage : null
+    }
+  }
+  
+  // event handlers
+  handleChange = e => {
+    if (e.target.files && e.target.files[0]){
+      this.setState({currentImage : URL.createObjectURL(e.target.files[0])});
+    }
+    
+  }
+
+  handleSubmit = e => {
+    e.preventDefault();
+    this.setState({images : [...this.state.images, this.state.currentImage]})
+  }
+
+
   render() {
+    const images = this.state.images;
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div className = "app">
+        <Header />
+        <HelpText />
+        <Form handleChange = {this.handleChange} handleSubmit = {this.handleSubmit} />
+        <Images images = {images}/>
       </div>
     );
   }
